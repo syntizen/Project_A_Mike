@@ -21,7 +21,7 @@ library(ggraph)
 
 ## Load Data
 # (Place Your Code for loading the data) 
-myFile <- file.choose()
+myFile <- file.choose()  #choose that file in csv format
 metadata_a <- read.csv(myFile)
 #View(Data)
 names(metadata_a)
