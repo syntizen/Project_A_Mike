@@ -21,8 +21,7 @@ library(ggraph)
 
 ## Load Data
 # (Place Your Code for loading the data) 
-myFile <- file.choose()
-metadata_a <- read.csv(myFile)
+metadata_a <- read.csv("C:/Users/syntizen/Downloads/Updated_Department_List.csv")
 #View(Data)
 names(metadata_a)
 
