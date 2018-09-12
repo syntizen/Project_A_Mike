@@ -21,7 +21,8 @@ library(ggraph)
 
 ## Load Data
 # (Place Your Code for loading the data) 
-metadata_a <- read.csv("C:/Users/syntizen/Downloads/Updated_Department_List.csv")
+myFile <- file.choose()
+metadata_a <- read.csv(myFile)
 #View(Data)
 names(metadata_a)
 
@@ -32,16 +33,16 @@ names(metadata_a)
 #title
 metadata_a$Title <- as.character(metadata_a$Title)
 class(metadata_a$Title)
-andeavor_title <- data_frame(id = metadata_a$ï.._id, title = metadata_a$Title)
+andeavor_title <- data_frame(id = metadata_a$?.._id, title = metadata_a$Title)
 andeavor_title
 
 #department
-andeavor_dept <- data_frame(id = metadata_a$ï.._id, dept = metadata_a$Department) %>%
+andeavor_dept <- data_frame(id = metadata_a$?.._id, dept = metadata_a$Department) %>%
   unnest(dept)
 andeavor_dept
 
 #site
-andeavor_site <- data_frame(id = metadata_a$ï.._id, site = metadata_a$Site)
+andeavor_site <- data_frame(id = metadata_a$?.._id, site = metadata_a$Site)
 andeavor_site %>%
   select(site) %>%
   sample_n(5)
@@ -50,7 +51,7 @@ andeavor_site %>%
 
 metadata_a$Event.Description <- as.character(metadata_a$Event.Description)
 class(metadata_a$Event.Description)
-andeavor_desc <- data_frame(id = metadata_a$ï.._id, desc = metadata_a$Event.Description) %>%
+andeavor_desc <- data_frame(id = metadata_a$?.._id, desc = metadata_a$Event.Description) %>%
   unnest(desc)
 andeavor_desc
 
