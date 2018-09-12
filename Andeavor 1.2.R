@@ -21,8 +21,7 @@ library(ggraph)
 
 ## Load Data
 # (Place Your Code for loading the data) 
-myFile <- file.choose()
-metadata_a <- read_xlsx(myFile)
+metadata_a <- read.csv("Desktop/Andeavor/2. Raw_Dataset/Updated_Department_List.csv")
 #View(Data)
 names(metadata_a)
 
@@ -33,16 +32,16 @@ names(metadata_a)
 #title
 metadata_a$Title <- as.character(metadata_a$Title)
 class(metadata_a$Title)
-andeavor_title <- data_frame(id = metadata_a$?.._id, title = metadata_a$Title)
+andeavor_title <- data_frame(id = metadata_a$X_id, title = metadata_a$Title)
 andeavor_title
 
 #department
-andeavor_dept <- data_frame(id = metadata_a$?.._id, dept = metadata_a$Department) %>%
+andeavor_dept <- data_frame(id = metadata_a$X_id, dept = metadata_a$Department) %>%
   unnest(dept)
 andeavor_dept
 
 #site
-andeavor_site <- data_frame(id = metadata_a$?.._id, site = metadata_a$Site)
+andeavor_site <- data_frame(id = metadata_a$X_id, site = metadata_a$Site)
 andeavor_site %>%
   select(site) %>%
   sample_n(5)
@@ -51,7 +50,7 @@ andeavor_site %>%
 
 metadata_a$Event.Description <- as.character(metadata_a$Event.Description)
 class(metadata_a$Event.Description)
-andeavor_desc <- data_frame(id = metadata_a$?.._id, desc = metadata_a$Event.Description) %>%
+andeavor_desc <- data_frame(id = metadata_a$X_id, desc = metadata_a$Event.Description) %>%
   unnest(desc)
 andeavor_desc
 
@@ -80,18 +79,15 @@ undesirable_words = read.csv("~/Desktop/Andeavor/2. Raw_Dataset/2. raw_dataset-1
 #undesirable_words <- as.list(undesirable_words)
 #class(undesirable_words)
 
-my_stopwords <- data_frame(word = c(as.character(1:10),
-                                    "1", "2", "3", "ee",
-                                    "fa", "pse", "4", "6410",
-                                    "145", "600", "t3", "l1"))
+my_stopwords <- data_frame(word = c(as.character(1:10), "1", "2", "3", "ee", "fa", "pse", "4", "6410", "145", "600"))
 #class(my_stopwords)
 andeavor_title <- andeavor_title %>%
-  anti_join(my_stopwords)
-  #filter(!word %in% undesirable_words) 
+  anti_join(my_stopwords)%>%
+  filter(!word %in% undesirable_words) 
   
 andeavor_desc <- andeavor_desc %>%
-  anti_join(my_stopwords)
-#  filter(!word %in% undesirable_words) 
+  anti_join(my_stopwords)%>%
+  filter(!word %in% undesirable_words) 
   
 andeavor_desc
 andeavor_title
@@ -113,27 +109,15 @@ desc_word_pairs <- andeavor_desc %>%
   pairwise_count(word, id, sort = TRUE, upper = FALSE)
 desc_word_pairs
 
-#Plot of title
+#Plot
 set.seed(1234)
 title_word_pairs %>%
-  filter(n >= 20) %>%
-  graph_from_data_frame()%>%
-  ggraph(layout = "fr") +
-  geom_edge_link(aes(edge_alpha = n, edge_width = n), edge_colour = "darkred") +
-  geom_node_point(size = 2) +
-  geom_node_text(aes(label = name), repel = TRUE,
-                 point.padding = unit(0.1, "lines")) +
-  theme_void()
-
-#plot of description
-set.seed(234)
-desc_word_pairs %>%
-  filter(n >=60) %>%
+  filter(n >= 250) %>%
   graph_from_data_frame()%>%
   ggraph(layout = "fr") +
   geom_edge_link(aes(edge_alpha = n, edge_width = n), edge_colour = "cyan4") +
-  geom_node_point(size = 2) +
-  geom_node_text(aes(label = name), repel = TRUE,
-                 point.padding = unit(0.1, "lines")) +
+  geom_node_point(size = 5) +
+  geom_node_text(aes(lable = name), repel = TRUE,
+                 point.padding = unit(0.2, "lines")) +
   theme_void()
 
