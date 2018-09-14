@@ -12,17 +12,17 @@ library(gridExtra) #viewing multiple plots together
 library(tidytext) #text mining
 library(wordcloud2) #creative visualizations
 library(lubridate) # Char to Date
-library(tidyr)
-library(widyr)
-library(igraph)
-library(ggraph)
+library(tidyr) # Kernal to the wordcloud
+library(widyr) # Bigrams
+library(igraph) # Create lexcicon gragh
+library(ggraph) # Create Histogram
 
 
 
 ## Load Data
 # (Place Your Code for loading the data) 
-myFile <- file.choose()  #choose that file in csv format
-metadata_a <- read.csv(myFile)
+myFile <- file.choose()  # choose that file in csv format
+metadata_a <- read.csv(myFile) 
 #View(Data)
 names(metadata_a)
 
@@ -75,7 +75,7 @@ andeavor_desc %>%
   count(word, sort = TRUE)
 
 #My stop words
-undesirable_words = read.csv("~/Desktop/Andeavor/2. Raw_Dataset/2. raw_dataset-1/Mike_Syed_Text_Mining_Sub_Section/Data4.csv",stringsAsFactors = FALSE,header=FALSE)$V1
+#undesirable_words = read.csv("~/Desktop/Andeavor/2. Raw_Dataset/2. raw_dataset-1/Mike_Syed_Text_Mining_Sub_Section/Data4.csv",stringsAsFactors = FALSE,header=FALSE)$V1
 #undesirable_words
 #undesirable_words <- as.list(undesirable_words)
 #class(undesirable_words)
@@ -85,12 +85,17 @@ my_stopwords <- data_frame(word = c(as.character(1:10),
                                     "fa", "pse", "4", "6410",
                                     "145", "600", "t3", "l1"))
 #class(my_stopwords)
+library (SnowballC)
 andeavor_title <- andeavor_title %>%
-  anti_join(my_stopwords)
+  anti_join(my_stopwords)%>%
+  #mutate stem words with snowball library
+  mutate(word = wordStem(word))
   #filter(!word %in% undesirable_words) 
   
 andeavor_desc <- andeavor_desc %>%
-  anti_join(my_stopwords)
+  anti_join(my_stopwords)%>%
+  mutate(word = wordStem(word))
+
 #  filter(!word %in% undesirable_words) 
   
 andeavor_desc
